@@ -1,0 +1,410 @@
+/* ========================================= */
+/* 1. 기본 설정 (Reset & Base)               */
+/* ========================================= */
+body {
+    background-color: #fcfcfc; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    color: #333;
+    margin: 0; 
+    padding: 0;
+    line-height: 1.5;
+}
+
+.body_container {
+    display: flex;
+    flex-direction: row;
+}
+
+main {
+    flex: 1;
+    margin-right: 18%;  
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); 
+}
+
+/* ========================================= */
+/* 2. 헤더 및 상단 네비게이션                 */
+/* ========================================= */
+.section_header {
+    height: 60px;    
+    display: flex;
+    align-items: center;
+    padding-left: 25px;
+    color: rgb(15, 0, 0);
+    margin-bottom: 60px;
+    padding-bottom: 10px;
+}
+
+.section_nav { 
+    margin-bottom: 25px;
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-start; 
+    padding: 0 10px;
+    gap: 180px; 
+}
+
+/* 상단 버튼 그룹 */
+.header_nav_button {
+    display: flex; 
+    align-items: center; 
+    gap: 12px;
+    position: relative;
+}
+
+.header_nav_button > button {
+    border-radius: 20px;
+    height: 38px;
+    width: 85px;
+    border: none;
+    background-color: #eef2f5;
+    color: #2c3e50;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.header_nav_button > button.active {
+    background-color: #4a98f7;
+    color: white;
+    box-shadow: 0 2px 8px rgba(74, 152, 247, 0.4);
+}
+
+.header_nav_button > button:hover:not(.active) {
+    background-color: #e0e6eb;
+    transform: translateY(-1px);
+}
+
+.notread_img {
+    position: absolute; 
+    top: -5px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    background-color: #e74c3c;
+    border-radius: 50%;
+}
+
+/* 상단 검색창 */
+.header_nav_search {
+    position: relative; 
+    width: 350px;
+}
+
+.header_nav_search > img {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    opacity: 0.5;
+}
+
+.header_nav_search > input { 
+    width: 100%;
+    height: 42px;
+    padding-left: 45px;
+    border: 1px solid #e0e0e0;
+    border-radius: 22px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.header_nav_search > input:focus {
+    border-color: #4a98f7;
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 152, 247, 0.2);
+}
+
+/* 상단 우측 페이지 상태 */
+.header_nav_page {
+    margin-left: auto; 
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0; 
+}
+
+.header_nav_page a {
+    text-decoration: none; 
+    color: #4a98f7;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.header_nav_page a:hover {
+    background-color: rgba(74, 152, 247, 0.1);
+}
+
+.page_status {
+    color: #999;
+    font-size: 15px;
+}
+
+/* ========================================= */
+/* 3. 채팅 컨테이너 (메인 영역)               */
+/* ========================================= */
+.chat_container {
+    display: flex;
+    height: calc(70vh - 90px); 
+    min-height: 450px;
+}
+
+/* 좌측 채팅 목록 */
+.side_list {
+    width: 350px;       /* 고정 너비 */
+    flex-shrink: 0;     /* 너비 유지 */
+    background-color: #f7f7f7;
+    border-radius: 12px;
+    padding: 10px;
+    margin-right: 20px; /* 입력창과의 간격 */
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.03); 
+    display: flex; 
+    flex-direction: column; 
+    box-sizing: border-box; /* 패딩 포함 너비 계산 */
+}
+
+.chatter_list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1; 
+    overflow-y: hidden; 
+}
+
+.individual_chatter {
+    margin-bottom: 6px;
+    border-radius: 8px;
+    padding: 12px;
+    transition: background-color 0.2s;
+    position: relative;
+    cursor: pointer;
+}
+
+.individual_chatter:hover {
+    background-color: #e7eff5;
+}
+
+.individual_chatter.active_chat {
+    background-color: #e7eff5; 
+    border-left: 4px solid #4a98f7;
+    padding-left: 8px;
+}
+
+.individual_chatter > a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    gap: 12px; 
+}
+
+.individual_chatter a img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #eee;
+}
+
+.chat_info {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.chatter_name {
+    font-weight: 600;
+    font-size: 15px;
+    color: #333;
+}
+
+.last_message {
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 13px;
+}
+
+.unread_count_icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 15px;
+    height: 15px;
+}
+
+/* 우측 채팅 패널 */
+.right_panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 12px; 
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.chat_messages {
+    flex-grow: 1;
+    overflow-y: auto; 
+    padding-right: 15px;
+    margin-bottom: 10px;
+}
+
+.message_row {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.user_row { justify-content: flex-start; }
+.manager_row { justify-content: flex-end; }
+
+.user_msg, .manager_msg { max-width: 70%; }
+
+.user_msg a { display: flex; align-items: flex-start; text-decoration: none; color: inherit; gap: 10px; }
+.user_msg a img { width: 35px; height: 35px; border-radius: 50%; }
+
+.message_bubble { 
+    padding: 10px 15px; 
+    border-radius: 18px; 
+    word-wrap: break-word; 
+    font-size: 14px; 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
+}
+
+.user_msg .message_bubble { background-color: #eef2f5; }
+.manager_msg .message_bubble { background-color: #4a98f7; color: white; }
+
+/* ========================================= */
+/* 4. 하단 컨트롤 영역 (Pagination & Input)    */
+/* ========================================= */
+.bottom_control_row {
+    display: flex;
+    align-items: center; 
+    margin-top: 20px;
+    width: 100%;
+    /* 왼쪽 사이드바 메뉴가 있다면 그만큼 띄워져야 하므로 
+       상단 chat_container와 시작점이 같아야 합니다. */
+}
+
+/* 하단 페이지네이션 섹션 */
+.side_pagination_section {
+    width: 350px;           /* 위쪽 .side_list와 동일한 너비 */
+    margin-right: 20px;     /* 위쪽 .side_list와 동일한 간격 */
+    display: flex;
+    justify-content: center; /* 350px 박스 안에서 버튼들을 중앙으로 */
+    align-items: center;
+    flex-shrink: 0;
+    
+    /* 중요: margin-left: 300px 같은 강제 수치는 삭제해야 합니다! */
+    box-sizing: border-box; 
+}
+
+.side_list_pagination {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 0;
+    margin: 0; /* 불필요한 마진 완전 제거 */
+}
+
+.side_list_pagination a {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 13px;
+    color: #777;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.side_list_pagination a:hover:not(.active) {
+    background-color: #f0f0f0;
+    color: #4a98f7;
+    border-color: #ccc;
+}
+
+.side_list_pagination a.active {
+    background-color: #082A71; /* 요청하신 남색 포인트 */
+    color: white;
+    border-color: #082A71;
+    font-weight: 600;
+    box-shadow: 0 1px 4px rgba(8, 42, 113, 0.3); 
+}
+
+/* 하단 메시지 입력 섹션 */
+.chat_input_section {
+    flex-grow: 1; 
+    display: flex;
+    /* .right_panel과 시작 위치가 자동으로 맞게 됩니다. */
+}
+
+.bottom_input_container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    border-radius: 28px;
+    background-color: white;
+    padding: 6px 18px;
+    height: 50px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.chat_input {
+    flex-grow: 1;
+    height: 100%;
+    border: none;
+    padding: 0 15px;
+    font-size: 15px;
+    outline: none;
+}
+
+.send_button, .attach_button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 6px;
+    transition: opacity 0.1s;
+    color: #777;
+}
+
+.send_button:hover, .attach_button:hover {
+    opacity: 0.7;
+    color: #4a98f7;
+}
+
+.bottom_img1, .bottom_img2 { 
+    width: 28px;
+    height: 28px; 
+    filter: invert(30%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(50%) contrast(90%);
+}
+
+.send_button:hover .bottom_img1, 
+.attach_button:hover .bottom_img2 {
+    filter: invert(47%) sepia(35%) saturate(3015%) hue-rotate(193deg) brightness(97%) contrast(92%);
+}
+
+/* ========================================= */
+/* 5. 기타 (사이드 메뉴 및 특수 클래스)         */
+/* ========================================= */
+.manager_side_menu {
+    background-color: greenyellow;    
+}
+
+.manager_list_group {
+    list-style: none;
+}

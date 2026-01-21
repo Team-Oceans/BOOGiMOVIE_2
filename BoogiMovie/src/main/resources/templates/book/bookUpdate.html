@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/common/font.css}">
+    <link rel="stylesheet" th:href="@{/css/book/bookWrite-style.css}">
+    <title>도서 수정</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    
+    
+
+</head>
+<body>
+    <!-- 헤더 -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+
+
+    <main class="write-container">
+
+        <div class="table-wrapper">
+            <h3>도서 상품 수정</h3>
+
+            <div th:text="${book.bookCount}"></div>
+
+            <form th:action="@{/books/{id}/update(id=${book.productNo})}" method="POST" name="bookFrm" id="writeFrm" enctype="multipart/form-data">
+                <!-- 상품번호(숨겨짐) -->
+                <input type="hidden" name="productNo" th:value="${book.productNo}">
+                <table class="table-container">
+                    
+                    <tbody>
+                        <tr> <!-- isbn -->
+                            <th>ISBN</th>
+                            <td><input class="book-isbn" name="isbn" type="text" th:value="${book.isbn}" placeholder="국제도서고유번호를 입력해 주세요. (공란 가능)"></td>
+                        </tr>
+
+                        <tr> <!-- 제목 -->
+                            <th>도서명</th>
+                            <td><input class="book-title" name="productTitle" type="text" th:value="${book.productTitle}" placeholder="책 제목을 입력해주세요."></td>
+                        </tr>
+
+                        <tr> <!-- 이미지 -->
+                            <th>대표이미지</th>
+                            <td>
+                                <label for="book-img"><img th:src="${book.imgPath}" id="add-img"></label>
+                                <input class="book-img" type="file" name="bookImage" hidden>
+                            </td>
+                        </tr>
+
+                        <tr> <!-- 작가 -->
+                            <th>작가</th>
+                            <td><input class='book-writer' name="writers" th:value="${#strings.listJoin(book.writers, ', ')}" placeholder='작가(지은이/글쓴이)를 입력해주세요.'></td>
+                        </tr>
+
+                        <tr> <!-- 출판사 -->
+                            <th>출판사</th>
+                            <td><input class='book-maker' name="publishers" th:value="${#strings.listJoin(book.publishers, ', ')}" placeholder='출판사를 입력해주세요.'></td>
+                        </tr>
+                        
+                        <tr> <!-- 출간일 -->
+                            <th>출간일</th>
+                            <td><input class="book-date" name="productDate" th:value="${#temporals.format(book.productDate, 'yyyy-MM-dd')}" type="date"></td>
+                        </tr>
+
+                        <tr> <!-- 가격 -->
+                            <th>판매가</th>
+                            <td><input class="book-price" name="productPrice" type="number" th:value="${book.productPrice}"> 원</td>
+                        </tr>
+
+                        <tr> <!-- 카테고리 -->
+                            <th class="category-th">카테고리</th>
+                            <td class="category-td">
+                                <select class="category-type" name="categoryMain" size="12">
+                                    <option value="1" th:selected="${book.categoryId == 1}">운동/취미/살림</option>
+                                    <option value="2" th:selected="${book.categoryId == 2}">교재/참고서/자격증</option>
+                                    <option value="3" th:selected="${book.categoryId == 3}">유아/어린이</option>
+                                    <option value="4" th:selected="${book.categoryId == 4}">여행</option>
+                                    <option value="5" th:selected="${book.categoryId == 5}">역사/문화/예술/종교</option>
+                                    <option value="6" th:selected="${book.categoryId == 6}">과학</option>
+                                    <option value="7" th:selected="${book.categoryId == 7}">외국어</option>
+                                    <option value="8" th:selected="${book.categoryId == 8}">만화</option>
+                                    <option value="9" th:selected="${book.categoryId == 9}">컴퓨터/모바일</option>
+                                    <option value="10" th:selected="${book.categoryId == 10}">외국도서</option>
+                                    <option value="11" th:selected="${book.categoryId == 11}">소설/희곡</option>
+                                    <option value="99" th:selected="${book.categoryId == 99}">기타</option>
+                                </select>
+        
+                                <select class="category-type-sub" name="categorySub" size="8">
+                                    <option value="12" th:selected="${book.categoryId == 12}">라이트노벨</option>
+                                    <option value="13" th:selected="${book.categoryId == 13}">판타지</option>
+                                    <option value="14" th:selected="${book.categoryId == 14}">SF</option>
+                                    <option value="15" th:selected="${book.categoryId == 15}">추리</option>
+                                    <option value="16" th:selected="${book.categoryId == 16}">로맨스</option>
+                                    <option value="17" th:selected="${book.categoryId == 17}">무협</option>
+                                    <option value="18" th:selected="${book.categoryId == 18}">희곡</option>
+                                    <option value="19" th:selected="${book.categoryId == 19}">기타</option>
+                                </select>
+                            </td>
+                            <input type="hidden" name="categoryId" id="categoryId">
+                        </tr>
+
+                        <tr> <!-- 재고 -->
+                            <th>재고</th>
+                            <td><input class="book-stock" name="bookCount" type="number" th:value="${book.bookCount}">개</td>
+                            
+                        </tr>
+
+                        <tr class="book-th"> <!-- 소개 -->
+                            <th>책 소개</th>
+                            <td>
+                                <textarea class="book-info" name="productContent" id="book-info" placeholder="내용을 입력해주세요." th:text="${book.productContent}"></textarea>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+                <!-- 제출버튼 -->
+                <div class="button-group">
+                    <button class="submit">등록하기</button>
+                    <button class="reset">취소</button>
+                </div>
+            </form>
+
+        </div>
+
+    </main>
+    
+    <th:block th:replace="~{common/footer}"></th:block>
+
+
+    <script th:src="@{/js/book/bookUpdate.js}"></script>
+</body>
+</html>

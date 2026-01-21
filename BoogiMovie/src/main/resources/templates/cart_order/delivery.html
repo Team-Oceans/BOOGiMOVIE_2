@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배송정보</title>
+    <link rel="stylesheet" th:href="@{/css/cart_order/delivery.css}">
+    <link rel="stylesheet" th:href="@{/css/common/font.css}">
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/font.css}">
+</head>
+
+<body>
+
+    <th:block th:replace="~{common/header_no_search}">header_no_search.html</th:block>
+
+
+    <!-- 전체 컨테이너 -->
+    <div class="order_container">
+        <!-- 회원 번호 -->
+        <input type="hidden" id="orderMemberNo" th:value="${orderMember.memberNo}">
+
+        <!-- 배송 정보 -->
+        <div class="order_info_container">
+            <div class="font-20px bold">배송정보</div>
+
+            <!-- 테두리 -->
+            <div class="order_info_box">
+
+                <!-- 왼쪽 영역 (주문자 및 요청사항) -->
+                <div class="orderer_left_container">
+                    <!-- 주문자 영역 -->
+                    <div class="orderer_container">
+                        <div class="info_text">
+                            <span class="red">*</span><span>주문자</span>
+                        </div>
+                        <div class="orderer_info">
+                            <input type="text" placeholder="주문자명" class="orderer_name orderer_input"
+                                    th:value="${orderMember.memberName}">
+                            <input type="text" placeholder="연락처('-' 포함)" class="orderer_phone orderer_input"
+                                    th:value="${orderMember.memberPhone}">
+                        </div>
+                    </div>
+
+                    <!-- 요청사항 -->
+                    <div class="orderer_request_container">
+                        <div class="info_text">요청사항 (선택)</div>
+                        <div>
+                            <input type="text" placeholder="요청사항을 작성해 주세요. (최대 30자)"
+                                class="order_request orderer_input">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 오른쪽 영역 (주소) -->
+                <div class="orderer_right_container">
+                    <div class="info_text">
+                        <span class="red">*</span><span>주소</span>
+                    </div>
+                    <!-- 주소 영역 -->
+                    <div class="orderer_address_area">
+                        <!-- 우편번호 및 주소찾기 -->
+                        <div>
+                            <input type="text" placeholder="우편번호" class="orderer_input orderer_post" id="sample6_postcode"
+                                    th:value="${orderMember.postNo}">
+                            <button class="find_address_btn bold" onclick="sample6_execDaumPostcode()">주소 찾기</button>
+                        </div>
+                        <!-- 도로명 주소 -->
+                        <div>
+                            <input type="text" placeholder="도로명 주소" id="sample6_address" class="orderer_input orderer_address"
+                                    th:value="${orderMember.address}">
+                        </div>
+                        <!-- 상세주소 -->
+                        <div>
+                            <input type="text" placeholder="상세 주소" id="sample6_detailAddress" class="orderer_input orderer_detail_address"
+                                    th:value="${orderMember.detailAddress}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 주문정보 및 결제수단 -->
+        <div class="order_pay_container">
+
+            <!-- 왼쪽 영역 (주문 정보) -->
+            <div class="order_info_left_container">
+                <div class="font-20px bold">주문정보</div>
+
+                <!-- 상품 하나 -->
+                <th:block th:if="${#lists.size(paymentList) > 0}">
+
+                    <th:block th:each="item : ${paymentList}">
+                        
+                        <div class="order_product_container order_item_values"
+                                    th:data-product-no="${item.productNo}"
+                                    th:data-quantity="${item.quantity}"
+                                    th:data-price="${item.productPrice}"
+                                    th:data-type="${item.typeCode}">
+
+                            <!-- 왼쪽 영역 (상품 이미지) -->
+                            <div class="product_img">
+                                <img th:src="${item.imgPath}" alt="">
+                            </div>
+            
+                            <!-- 오른쪽 영역 (상품 정보) -->
+                            <div class="product_info_container">
+                                <div class="product_title bold font-18px" th:text="${item.productTitle}">상품명</div>
+            
+                                <div class="quantity_price_container">
+                                    <div>
+                                        <span>수량</span> <span th:text="|${item.quantity}개|">1개</span>
+                                    </div>
+                                    <div th:text="|개당 ${#numbers.formatInteger(item.productPrice, 1, 'COMMA')}원|">18,200원</div>
+                                </div>
+            
+                            </div>
+                        </div>
+                    </th:block>
+                </th:block>
+
+
+            </div> <!-- 왼쪽 end -->
+
+            <!-- 오른쪽 영역 (결제 수단) -->
+            <div class="order_info_right_container">
+                <div class="font-20px bold">결제수단</div>
+
+                <div class="payment_container">
+                    <div class="payment">
+                        <div>
+                            <input type="radio" name="payments" value="CARD" id="simplePay">
+                            <label for="simplePay">카드 결제</label> 
+                        </div>
+                        <!-- <div>
+                            <input type="radio" name="payments" value="card" id="cardPay">
+                            <label for="cardPay">카드 결제</label>
+                        </div> -->
+                    </div>
+                </div>
+
+                <!-- 결제 및 취소 버튼 -->
+                <div class="btn_area">
+                    <button class="order_btn"><span th:text="|${#numbers.formatInteger(totalAmount, 1, 'COMMA')}원|">18,200원 </span> 결제하기</button>
+                    <button id="cancel_payment">결제취소</button>
+                </div>
+            </div> <!-- 오른쪽 end -->
+        </div>
+    </div>
+
+    <!-- 포트원 시크릿키 -->
+    <input type="hidden" id="portone-store-id" th:value="${storeId}">
+    <input type="hidden" id="portone-channel-key" th:value="${channelKey}">
+
+    <th:block th:replace="~{common/footer}">footer.html</th:block>
+
+
+    <!-- 주소 검색 api -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        function sample6_execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var addr = ''; // 주소 변수
+
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('sample6_postcode').value = data.zonecode;
+                    document.getElementById("sample6_address").value = addr;
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("sample6_detailAddress").focus();
+                }
+            }).open();
+        }
+    </script>
+
+    <script src="https://cdn.portone.io/v2/browser-sdk.js" async defer></script>
+    <script th:src="@{/js/pay/productPayment.js}"></script>
+</body>
+
+</html>

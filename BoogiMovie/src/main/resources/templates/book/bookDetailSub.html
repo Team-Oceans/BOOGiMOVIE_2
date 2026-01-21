@@ -1,0 +1,122 @@
+<!-- 도서 소개 -->
+<div class="detail-text-area">
+    
+    <p>도서 소개</p>
+
+    <pre class="detail-text closed" th:text="${book.productContent}">
+    </pre>
+    <button class="open-toggle">더보기 ▼</button>
+</div>
+
+<!-- 연관상품 구역 -->
+<hr>
+
+<!-- 카테고리 -->
+<section class="same-box" id="type"
+         th:if="${popList != null and !#lists.isEmpty(popList)}">
+    
+    <h2 class="same-type">카테고리 인기 도서</h2>
+    <div class="same-product-row">
+
+        <a class="same-product"
+           th:each="book : ${popList}"
+           th:href="@{/books/{id}(id=${book.productNo})}">
+
+            <img class="same-img" th:src="${book.imgPath}">
+
+            <div class="same-title" th:text="${book.productTitle}">흑백요리사 1</div>
+
+            <div class="same-price" th:text="${#numbers.formatInteger(book.productPrice, 0, 'COMMA')} + ' 원'">20,000 원</div>
+        </a>
+    </div>
+
+</section>
+
+
+<!-- 영화 -->
+<!-- <section class="same-box" id="movie">
+    
+    <h2 class="same-type">연관 영화 추천</h2>
+    
+    <div class="same-product-row">
+        
+        <a class="same-product" href="#">
+            <img class="same-img" src="https://image.aladin.co.kr/product/37880/99/cover200/k072033906_1.jpg">
+            <div class="same-title">흑백요리사 1</div>
+            <div class="same-maker">백종원</div>
+            <div class="same-price">20,000 원</div>
+        </a>
+        <a class="same-product" href="#">
+            <img class="same-img" src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791193904671.jpg">
+            <div class="same-title">돈의 방정식</div>
+            <div class="same-maker">백종원</div>
+            <div class="same-price">20,000 원</div>
+        </a>
+        <a class="same-product" href="#">
+            <img class="same-img" src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791190888417.jpg">
+            <div class="same-title">느린 아이 행복 수업</div>
+            <div class="same-maker">이혜영 </div>
+            <div class="same-price">20,000 원</div>
+        </a>
+        <a class="same-product" href="#">
+            <img class="same-img" src="https://image.aladin.co.kr/product/37880/99/cover200/k072033906_1.jpg">
+            <div class="same-title">흑백요리사 1</div>
+            <div class="same-maker">백종원</div>
+            <div class="same-price">20,000 원</div>
+        </a>
+        <a class="same-product" href="#">
+            <img class="same-img" src="https://image.aladin.co.kr/product/37880/99/cover200/k072033906_1.jpg">
+            <div class="same-title">흑백요리사 1</div>
+            <div class="same-maker">백종원</div>
+            <div class="same-price">20,000 원</div>
+        </a>
+
+    </div>
+
+</section> -->
+
+<!-- <hr> -->
+
+<!-- 작가 -->
+<!-- <section class="same-box" id="maker">
+    
+    <h2 class="same-type">이 작가의 다른 작품</h2>
+    <div class="same-product-row">
+
+        <a class="same-product" href="#">
+            <img class="same-img" src="https://image.aladin.co.kr/product/37880/99/cover200/k072033906_1.jpg">
+            <div class="same-title">흑백요리사 1</div>
+            <div class="same-maker">백종원</div>
+            <div class="same-price">20,000 원</div>
+        </a>
+        <a class="same-product" href="#">
+            <img class="same-img" src="https://image.aladin.co.kr/product/37880/99/cover200/k072033906_1.jpg">
+            <div class="same-title">흑백요리사 1</div>
+            <div class="same-maker">백종원</div>
+            <div class="same-price">20,000 원</div>
+        </a>
+        <a class="same-product" href="#">
+            <img class="same-img" src="https://image.aladin.co.kr/product/37880/99/cover200/k072033906_1.jpg">
+            <div class="same-title">흑백요리사 1</div>
+            <div class="same-maker">백종원</div>
+            <div class="same-price">20,000 원</div>
+        </a>
+        <a class="same-product" href="#">
+            <img class="same-img" src="https://image.aladin.co.kr/product/37880/99/cover200/k072033906_1.jpg">
+            <div class="same-title">흑백요리사 1</div>
+            <div class="same-maker">백종원</div>
+            <div class="same-price">20,000 원</div>
+        </a>
+        <a class="same-product" href="#">
+            <img class="same-img" src="https://image.aladin.co.kr/product/37880/99/cover200/k072033906_1.jpg">
+            <div class="same-title">흑백요리사 1</div>
+            <div class="same-maker">백종원</div>
+            <div class="same-price">20,000 원</div>
+        </a>
+
+    </div>
+
+</section>
+
+<hr> -->
+

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" th:href="@{/css/member/login.css}">
+    <link rel="stylesheet" th:href="@{/css/common/font.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="login_container">
+        <div class="logo"><img th:src="@{/images/common/logo_basic.png}" alt="로고"></div>
+
+        <form th:action="@{/member/login}" method="post">
+            <div class="input_container">
+                <!-- 아이디 -->
+                <div class="login_id_container">
+                    <div class="login_input">아이디</div>
+                    <input type="text" class="input_width" name="memberId" value="" required>
+                </div>
+
+                <!-- 비밀번호 -->
+                <div class="login_pw_container">
+                    <div class="login_input">비밀번호</div>
+                    <input type="password" class="input_width" name="memberPw" required>
+                </div>
+
+                <!-- 아이디 저장 -->
+                <div class="save_id_container">
+                    <input type="checkbox" id="saveId" name="saveId">
+                    <label for="saveId">아이디 저장</label>
+                </div>
+            </div>
+
+            <!-- 로그인 버튼 -->
+            <div class="login_btn">
+                <button class="font-18px bold">로그인</button>
+            </div>
+        </form>
+
+        <!-- 회원가입 및 관리자 로그인 -->
+        <div class="login_signup_container">
+            <div><span>계정이 없으신가요? </span><a th:href="@{/member/signUp}" class="bold">회원가입</a></div>
+            <div><a th:href="@{/admin/login}">관리자 로그인</a></div>
+        </div>
+
+        <!-- 소셜 로그인 -->
+        <!-- <div class="social_container">
+            <div class="social_text_container">
+                <span class="line"></span>
+                <span class="line_text">소셜 로그인</span>
+                <span class="line"></span>
+            </div>
+    
+            <div class="social_btn_container">
+                <img th:src="@{/svg/kakao.svg}" alt="카카오">
+                <img th:src="@{/svg/google.svg}" alt="구글">
+            </div>
+            <div class="g-signin" data-onsuccess="onSignIn"></div>
+        </div> -->
+    </div>
+
+    <script th:inline="javascript">
+
+        const message = /*[[${message}]]*/ "전달 받은 message";
+        if(message != null) alert(message);
+
+        // JS로 Cookie 가져오기
+        function getCookie(key){
+            const cookies = document.cookie
+            console.log(cookies)
+            const cookieList = cookies.split("; ").map(cookie => cookie.split("="))
+
+            const obj = {}; // 비어있는 객체 생성
+
+            for(let i=0; i<cookieList.length; i++){
+                obj[cookieList[i][0]] = cookieList[i][1]; // K = V
+            }
+
+            return obj[key]; 
+        }
+
+        // 쿠키에 saveId가 있을 경우
+        if(document.getElementsByName("memberId")[0] != null){
+            const saveId = getCookie("saveId");
+
+            if(saveId != undefined){
+                document.querySelector("input[name='memberId']").value = saveId;
+                document.querySelector("input[name='saveId']").checked = true;
+            }
+        }
+
+        // 구글 로그인
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        }
+
+    </script>
+
+</body>
+
+</html>

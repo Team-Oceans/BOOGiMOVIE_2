@@ -1,0 +1,174 @@
+
+<link rel="stylesheet" th:href="@{/css/common/header.css}">
+<link rel="stylesheet" th:href="@{/css/common/font.css}">
+
+
+<header xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div class="header_container">
+        <!-- 홈 / 도서 / 중고도서 / 영화 -->
+        <div class="blue_background">
+            <div class="header_inner">
+                <div class="header_category">
+                    <!-- 선택에 따른 효과 - 타임리프(경로에 따른 효과 주기로 변경 예정) -->
+                    <a th:href="@{/}" th:classappend="${url == 'home' ? 'header_active' : ''}"><div class="white font-18px">홈</div></a>
+                    <a th:href="@{/books}" th:classappend="${url == 'books' ? 'header_active' : ''}"><div class="white font-18px">도서</div></a>
+                        <a th:href="@{/ubooks}" th:classappend="${url == 'ubooks' ? 'header_active' : ''}"><div class="white font-18px">중고도서</div></a>
+                        <a th:href="@{/movies}" th:classappend="${url == 'movies' ? 'header_active' : ''}"><div class="white font-18px">영화</div></a>
+                </div>
+
+                <!-- 로그인 X -->
+                <div sec:authorize="isAnonymous()" class="header_login">
+                    <a th:href="@{/member/login}"><div class="white font-18px">로그인</div></a>
+                    <a th:href="@{/member/signUp}"><div class="white font-18px">회원가입</div></a>
+                </div>
+
+                <!-- 유저 로그인 -->
+                <div sec:authorize="hasRole('USER')" class="header_login">
+                    <a th:href="@{/cart}"><div class="white font-18px">장바구니</div></a>
+                    <a th:href="@{/myPage}"><div class="white font-18px">마이페이지</div></a>
+                    
+                    <a th:href="@{/chatting}" id="headerChatLink" style="text-decoration: none; display: flex; align-items: center; gap: 8px;">
+                            <div class="white font-18px">1:1 문의</div>
+                            <span class="notread_img" id="headerUnreadBadge" style="display: none;">0</span>
+                    </a>
+
+                    <a th:href="@{/member/logout}"><div class="white font-18px">로그아웃</div></a>
+                </div>
+
+                <!-- 관리자 로그인 -->
+                <div sec:authorize="hasRole('ADMIN')" class="header_login">
+                    <a th:href="@{/admin/statistics}"><div class="white font-18px">관리자 페이지</div></a>
+
+                    <a th:href="@{/chatting}" id="headerChatLink" style="text-decoration: none; display: flex; align-items: center; gap: 8px;">
+                            <div class="white font-18px">1:1 문의</div>
+                            <span class="notread_img" id="headerUnreadBadge" style="display: none;">0</span>
+                    </a>
+
+                    <a th:href="@{/admin/logout}"><div class="white font-18px">로그아웃</div></a>
+                </div>
+
+            </div>
+        </div>
+
+            <!-- 로고 및 검색바 -->
+            <div class="logo_search_container">
+                <div class="search_margin">
+                    <!-- 로고 -->
+                    <div class="logo_container">
+                        <a th:href="@{/}"><img th:src="@{/images/common/logo_basic.png}"></a>
+                    </div>
+    
+                    <!-- 검색바 전체 자리 -->
+                    <div class="search_wrapper">
+                        
+                        <div class="search_container">
+                            <div class="search_icon">
+                                <img th:src="@{/svg/search_icon.svg}" alt="">
+                            </div>
+                            <div class="search_input">
+                                <input type="text" placeholder="원하는 작품을 검색해 보세요!">
+                            </div>
+                        </div>
+
+                        <!-- 통합검색 결과 -->
+                        <div class="search_dropdown">
+                            
+                            <!-- 도서 -->
+                            <div class="search_category">
+                                <div class="dropdown_category bold font-18px">도서</div>
+
+                                <!-- 상품들 묶는 컨테이너 -->
+                                <div class="search_result_container">
+                                    <!-- 상품 하나 -->
+                                    <a th:href="@{#}" class="category_a">
+                                        <div class="dropdown_item">
+                                            <div class="dropdown_img">
+                                                <img th:src="@{/images/cart/mock_book1.png}">
+                                            </div>
+                                            <div class="dropdown_item_name">개발자 생존법</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- 영화 -->
+                            <div class="search_category">
+                                <div class="dropdown_category bold font-18px">영화</div>
+
+                                <!-- 상품들 묶는 컨테이너 -->
+                                <div class="search_result_container">
+                                    <!-- 상품 하나 -->
+                                    <a th:href="@{#}" class="category_a">
+                                        <div class="dropdown_item">
+                                            <div class="dropdown_img">
+                                                <img th:src="@{/images/cart/mock_book2.png}">
+                                            </div>
+                                            <div class="dropdown_item_name">엑스 마키나</div>
+                                        </div>
+                                    </a>
+                                    <a th:href="@{#}" class="category_a">
+                                        <div class="dropdown_item">
+                                            <div class="dropdown_img">
+                                                <img th:src="@{/images/cart/mock_book2.png}">
+                                            </div>
+                                            <div>루퍼</div>
+                                        </div>
+                                    </a>
+                                    <a th:href="@{#}" class="category_a">
+                                        <div class="dropdown_item">
+                                            <div class="dropdown_img">
+                                                <img th:src="@{/images/cart/mock_book2.png}">
+                                            </div>
+                                            <div>이글 아이</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+    
+                    <!-- 인기 검색어 -->
+                    <div class="popular_search_box">
+                        <div class="bold">인기 검색어</div>
+                        
+                        <div class="popular_search_window">
+                            <ul class="popular_search_list">
+                                <!-- <li>개발자 책 추천</li>
+                                <li>아 살려주세요</li>
+                                <li>여기 사람 갇혔어요</li>
+                                <li>이거 언제 다 만드냐고</li>
+                                <li>왜 되다 말어</li>
+                                <li>왜애애애</li>
+                                <li>제발 잠 좀</li>
+                                <li>자게 해주세요</li> -->
+                            </ul>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+        <script th:inline="javascript">
+        /*<![CDATA[*/
+        // null 체크를 더 명확히 하고, 타임리프 문법이 확실히 적용되게 수정
+        window.loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ null;
+        
+        // 만약 undefined 방지를 위해 강제로 null 대입 로직 추가
+        if (typeof window.loginMemberNo === 'undefined') {
+            window.loginMemberNo = null;
+        }
+        
+        console.log("변수 설정완료: ", window.loginMemberNo);
+        /*]]>*/
+    </script>
+    <script th:src="@{/js/common/header.js}"></script>
+    <script th:src="@{/js/common/search.js}"></script>
+
+
+
+</header>
+

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" th:href="@{/css/common/header.css}"> -->
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+
+    <!-- <link rel="stylesheet" href="../../static/css/common/footer.css"> -->
+    
+    <link rel="stylesheet" th:href="@{/css/book/bookList-style.css}">
+    <link rel="stylesheet" th:href="@{/css/common/font.css}">
+    <!-- <link rel="stylesheet" href="../../static/css/book/bookList-style.css"> -->
+    <title>도서</title>
+
+    
+    <!-- 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <!-- 헤더 -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+
+    <!-- 도서 목록 1페이지 -->
+    <div class="book-container">
+
+        <div class="book-header">
+            
+            <!-- 네비게이션 -->
+            <div class="nav-container">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item active">
+                        <a class="nav-link active" aria-current="page" th:href="@{/books}">도서</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 장르 필터 -->
+            <section class="book-category-area">
+
+                <!-- 카테고리 -->
+                <div class="book-category-main1">
+                    <button type="button" class="category-btn small" data-value="0">전체</button>
+                    <button type="button" class="category-btn" data-value="1">운동/취미/살림</button>
+                    <button type="button" class="category-btn" data-value="2">교재/참고서/자격증</button>
+                    <button type="button" class="category-btn" data-value="3">유아/어린이</button>
+                    <button type="button" class="category-btn" data-value="4">여행</button>
+                    <button type="button" class="category-btn" data-value="5">역사/문화/예술/종교</button>
+                </div>
+                <div class="book-category-main2">
+                    <button type="button" class="category-btn small" data-value="99">기타</button>
+                    <button type="button" class="category-btn" data-value="6">과학</button>
+                    <button type="button" class="category-btn" data-value="7">외국어</button>
+                    <button type="button" class="category-btn" data-value="8">만화</button>
+                    <button type="button" class="category-btn" data-value="9">컴퓨터/모바일</button>
+                    <button type="button" class="category-btn" data-value="10">외국도서</button>
+                </div>
+
+                <!-- 소설 구역 -->
+                <div class="category-novel-group">
+                    <button type="button" class="category-btn" data-value="11">소설/희곡 ▶</button>
+                    <div class="category-sub">
+                        <button type="button" class="category-btn sub font-12px" data-value="12">라이트노벨</button>
+                        <button type="button" class="category-btn sub" data-value="13">판타지</button>
+                        <button type="button" class="category-btn sub" data-value="14">SF</button>
+                        <button type="button" class="category-btn sub" data-value="15">추리</button>
+                        <button type="button" class="category-btn sub" data-value="16">로맨스</button>
+                        <button type="button" class="category-btn sub" data-value="17">무협</button>
+                        <button type="button" class="category-btn sub" data-value="18">희곡</button>
+                        <button type="button" class="category-btn sub" data-value="19">기타</button>
+                    </div>
+                </div>
+            </section>
+        
+            <div class="list-top-area">
+                <select name="sort" id="list-sort">
+                    <option value="latest"
+                            th:selected="${paramMap['sort'] == 'latest'}">최신순</option>
+                    <option value="title"
+                            th:selected="${paramMap['sort'] == 'title'}">가나다순</option>
+                    <option value="popular"
+                            th:selected="${paramMap['sort'] == 'popular'}">인기순</option>
+                </select>
+        
+                <div>
+                    <input type="text" id="mini-search-input" placeholder="제목, 작가 검색" th:value="${paramMap['query']}">
+                    <button id="mini-search-btn">검색</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 전체 -->
+        <div class="book-list active" id="all">
+            
+            <!-- 상품 1행 -->
+            <div class="card-group" th:each="row : ${#numbers.sequence(0, page.content.size() - 1, 5)}">
+
+                <!-- 상품 1개 -->
+                <a class="book-product" 
+                   th:each="i : ${#numbers.sequence(row, row + 4)}"
+                   th:if="${i < page.content.size()}"
+                   th:with="book=${page.content[i]}"
+                   th:href="@{/books/{id}(id=${book.productNo})}">
+
+                    <img class="book-img" th:src="${book.imgPath}" alt="도서 이미지">
+                    <div class="book-title" th:text="${book.productTitle}"></div>
+                    <div class="book-maker" th:text="${book.writers}"></div>
+                    <div class="book-price" th:text="${#numbers.formatInteger(book.productPrice, 0, 'COMMA')} + ' 원'"></div>
+                    <!-- <div class="book-rating">평점 4.5</div> -->
+                </a>
+                
+            </div>
+        </div>
+
+
+        <div sec:authorize="hasRole('ADMIN')" class="btn-area">
+            <button sec:authorize="hasRole('ADMIN')" id="write-btn">글쓰기</button>
+        </div>
+    </div>
+
+    <!-- 페이지네이션 -->
+
+    <nav class="pagination" th:if="${page.totalPages > 0}" aria-label="페이지네이션">
+        
+        <ul class="pagination-list">
+
+            <!-- 처음으로 -->
+            <li class="pagination-item">
+                <a href="#" class="pagination-link" th:attr="data-page=1">
+                    &lt;&lt;
+                </a>
+            </li>
+
+            <!-- 이전 -->
+            <li class="pagination-item">
+                <a href="#" class="pagination-link" th:attr="data-page=${pageDto.prevPage}">
+                    &lt;
+                </a>
+            </li>
+
+            <!-- 페이지 번호 -->
+            <th:block th:each="i : ${#numbers.sequence(pageDto.blockStart, pageDto.blockEnd)}">
+
+                
+                <!-- 현재 페이지 -->
+                <li class="pagination-item" th:if="${i == pageDto.currentPage}">
+                    <a href="#" class="pagination-link active" th:text="${i}">
+                    </a>
+                </li>
+                
+                <!--  나머지 페이지 -->
+                <li class="pagination-item" th:unless="${i == pageDto.currentPage}">
+                    <a href="#" class="pagination-link" th:attr="data-page=${i}" th:text="${i}">
+                    </a>
+                </li>
+            
+            </th:block>
+
+            <!-- 다음 -->
+            <li class="pagination-item">
+                <a href="#" class="pagination-link" th:attr="data-page=${pageDto.nextPage}">
+                    &gt;
+                </a>
+            </li>
+
+            <!-- 끝 -->
+            <li class="pagination-item">
+                <a href="#" class="pagination-link" th:attr="data-page=${pageDto.endPage}">
+                    &gt;&gt;
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+    <!-- 푸터 -->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+
+    <script  th:src="@{/js/book/bookList.js}"></script>
+</body>
+</html>

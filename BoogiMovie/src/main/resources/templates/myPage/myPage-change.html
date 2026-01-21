@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내정보 수정</title>
+    <link rel="stylesheet" th:href="@{/css/myPage/myPage-change.css}">
+    <link rel="stylesheet" th:href="@{/css/common/font.css}">
+    <link rel="stylesheet" th:href="@{/css/myPage/myPage_sideBar.css}">
+</head>
+
+<body>
+    <th:block th:replace="~{common/header_no_search}">header_no_search.html</th:block>
+    
+    <div class="content_wrapper">
+
+        <th:block th:replace="~{myPage/myPage_sideBar}">myPage_sideBar.html</th:block>
+
+
+
+        <!-- 전체 컨테이너 -->
+        <div class="myPage_container">
+            
+            <!-- 사용자 정보 -->
+            <div class="myPage-title">정보 수정</div>
+
+            <div class="user_info_container">
+
+                <!-- 프로필 이미지 구역 -->
+                <section class="profile-box">
+                    <label for="profile-img">
+                        <img id="change-img" th:src="${memberInfo.profilePath != null ? memberInfo.profilePath : '/svg/person.svg'}"
+                             data-default-src="/svg/person.svg">
+                    </label>
+                    <input type="file" id="profile-img" name="profileImage" class="profile-img" accept="image/*" hidden>
+    
+                    <button type="button" class="img-change-btn">사진 변경</button>            
+                </section>
+
+                <!-- 회원 정보 구역 -->
+                <section class="info-text-area">
+
+                    <!-- 아이디 -->
+                    <div class="info-box">
+                        <b class="t-name">아이디</b>
+                        <p class="user-id" th:text="${memberInfo.memberId}">아이디</p>
+                        <button class="just-shape" disabled></button>
+                    </div>
+
+                    <!-- 비밀번호 -->
+                    <div class="info-box">
+                        <b class="t-name">비밀번호</b>
+                        <p class="user-pw">••••••••••</p>
+                        <button class="change-btn pw">수정</button>
+                    </div>
+
+                    <!-- 비밀번호 수정 -->
+                    <section class="change-pw-box">
+                        
+                        <div class="edit-box">
+                            <b class="t-name">비밀번호</b>
+                            <input type="password" class="edit-pw" value="qwer1234">
+                            <button class="just-shape" disabled style="background-color: white;"></button>
+                        </div>
+                        <br>
+                        <div class="edit-box">
+                            <b class="t-name">비밀번호 확인</b>
+                            <input type="password" class="edit-pw-confirm" value="qwer1234">
+                            <button class="change-pw-submit">완료</button>
+                        </div>
+
+                    </section>
+
+
+                    <!-- 이름 -->
+                    <div class="info-box">
+                        <b class="t-name">이름</b>
+                        <p class="user-name" th:text="${memberInfo.memberName}">이름</p>
+                        <button class="change-btn name">수정</button>
+                    </div>
+                    
+                    <!-- 닉네임 -->
+                    <div class="info-box">
+                        <b class="t-name">닉네임</b>
+                        <p class="user-nickname" th:text="${memberInfo.memberNickName}">닉네임</p>
+                        <button class="change-btn nickname">수정</button>
+                    </div>
+                    
+                    <!-- 전화번호 -->
+                    <div class="info-box">
+                        <b class="t-name">전화번호</b>
+                        <p class="user-phone" th:text="${memberInfo.memberPhone}">전번</p>
+                        <button class="just-shape" disabled></button>
+                    </div>
+                    
+                    <!-- 이메일 -->
+                    <div class="info-box">
+                        <b class="t-name">이메일</b>
+                        <p class="user-email" th:text="${memberInfo.memberEmail}">이메일</p>
+                        <button class="change-btn email">수정</button>
+                    </div>
+
+                    
+                </section>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+    <th:block th:replace="~{common/footer}">footer.html</th:block>
+    <script th:src="@{/js/myPage/myPage-change.js}"></script>
+</body>
+
+</html>

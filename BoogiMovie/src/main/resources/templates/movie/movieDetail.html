@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/movie/movie-detail.css}">
+    <!-- <link rel="stylesheet" href="../../static/css/movie/movie-detail.css"> -->
+
+    <!-- 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/f7459b8054.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css">
+
+    <title th:text="${movie.productTitle}">영화 상세</title>
+</head>
+<body>
+    <!-- 헤더 -->
+    <th:block th:replace="~{common/header}">header.html</th:block>
+
+    <main class="main">
+        <section class="movie-category-path">
+            <!-- 영화 경로 -->
+            <div class="category-view">
+                <span th:text="${movie.parentName}">해외영화</span>
+                <span> &gt; </span>
+                <span class="category-name" th:text="${movie.categoryName}">애니메이션</span>
+            </div>
+
+            <!-- 관리자용 수정 삭제 -->
+            <div class="edit" sec:authorize="hasRole('ADMIN')">
+                <a class="go-edit" id="update-btn">수정</a>
+                <span>|</span>
+                <a class="go-delete" id="delete-btn">삭제</a>
+            </div>
+        </section>
+
+        <section class="movie-detail-main">
+            <!-- 영화 대표 이미지 -->
+            <div class="img-area">
+                <img class="movie-cover" th:src="${movie.imgPath}">
+            </div>
+
+            <div class="detail-area">
+                <!-- 영화 제목 -->
+                <h2 class="movie-title" th:text="${movie.productTitle}">주토피아2</h2>
+
+                <!-- 영화 기본 정보 -->
+                <div class="movie-info">
+                    <span th:text="${#temporals.format(movie.productDate, 'yyyy.MM.dd')} + ' 개봉'">2025.11.26 개봉</span>
+                    <span>|</span>
+                    <span th:text="${movie.movieTime} + '분'">108분</span>
+                    <span>|</span>
+                    <span th:text="${#strings.listJoin(movie.nation, ', ')}">미국</span>
+                    <span>|</span>
+                    <span th:text="${movie.filmRatingLabel}">전체관람가</span>
+                </div>
+
+                <button id="movieLikeBtn" type="button">
+                    <i class="fa-heart" th:classappend="${likeCheck} ? 'fa-solid' : 'fa-regular'" id="movieHeart"></i>
+                    <span id="likeCount" th:text="${likeCount}">0</span>
+                </button>
+                
+                <div class="movie-price">
+                    <div>평점 <b class="rate-value" th:text="${#numbers.formatDecimal(rating, 1, 1)}">4.8</b></div>
+
+                    <label class="sell-price">판매가 <b th:text="${#numbers.formatInteger(movie.productPrice, 3, 'COMMA')} + '원'">23,400원</b></label>
+                </div>
+                
+                <div class="movie-buy">
+                    <button class="add-cart">장바구니</button>
+                    <button class="buy">구매하기</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 상세정보/관람평 탭 -->
+        <section class="tab-wrapper">
+            <div class="tab-buttons">
+                <button class="tab-btn active">상세정보</button>
+                <button class="tab-btn">관람평</button>
+            </div>
+
+            <div class="tab-contents">
+                <!-- 상세정보 -->
+                <div class="tab-content active" id="detail">
+                    <p>영화소개</p>
+                    <pre class="movie-pre hidden" th:text="${movie.productContent}">더 화려해진 세계, 더 넓어진 주토피아!
+디즈니의 가~~장 사랑스러운 콤비 '주디'와 '닉'이 돌아온다! 
+
+미스터리한 뱀 ‘게리’가 나타난 순간,
+주토피아가 다시 흔들리기 시작했다!
+
+혼란에 빠진 도시를 구하기 위해
+환상의 콤비 ‘주디’ & ‘닉’이 잠입 수사에 나서고
+상상 그 이상의 진실과 위협을 마주하게 되는데...!
+
+11월, 초특급 추적 어드벤처가 펼쳐진다!</pre>
+
+                    <button class="open-toggle">더보기 ▼</button>
+
+                    <hr>
+
+                    <p>영화정보</p>
+                    <ul class="movie-text">
+                        <li>장르 : <span th:text="${movie.categoryName}">애니메이션</span>
+                            <span> / </span>
+                            <span th:text="${#strings.listJoin(movie.nation, ', ')}">미국</span>
+                        </li>
+                        <li>감독 : <span th:text="${#strings.listJoin(movie.directors, ', ')}">바이론 하워드, 재러드 부시</span></li>
+                        <li>출연 : <span th:text="${#strings.listJoin(movie.actors, ', ')}">지니퍼 굿원, 제이슨 베이트먼, 키 호이 관</span></li>
+                        <li>제작사 : <span th:text="${#strings.listJoin(movie.companies, ', ')}">월트 디즈니 픽처스, 월트 디즈니 애니메이션 스튜디오</span></li>
+                    </ul>
+
+                    <!-- 연관 콘텐츠 추천 -->
+                    <!-- 도서 추천 -->
+                    <!-- <section id="book">
+                        <h4>연관 도서 추천</h4>
+                        <div class="book-row">
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                        </div>
+                    </section> -->
+
+                    <!-- 배우 작품 추천 -->
+                    <!-- <section id="actor">
+                        <h4>출연배우 작품 추천</h4>
+                        <div class="book-row">
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                        </div>
+                    </section> -->
+
+
+                    <!-- 감독 작품 추천 -->
+                    <!-- <section id="creator">
+                        <h4>감독 작품 추천</h4>
+                        <div class="book-row">
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                            <a th:href="@{#}" class="related">
+                                <img src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202512/23712_201_1.jpg">
+                                <p>오늘밤, 세계에서 이 사랑이 사라진다 해도</p>
+                                <p>김혜영</p>
+                                <p>18,000원</p>
+                            </a>
+                        </div>
+                    </section> -->
+                </div>
+
+
+                <!-- 관람평 -->
+                <section class="tab-content" id="review">
+
+                    <!-- 관람평 작성 -->
+                    <div class="review-area">
+                        <!-- 로그인 한 사람 -->
+                        <button class="review-btn" th:if="${session.loginMember}">관람평 작성</button>
+
+                        <!-- 로그인 안한 사람 -->
+                        <button class="review-btn-disabled" th:unless="${session.loginMember}" onclick="alert('로그인 후 이용해주세요.')">관람평 작성</button>
+                        
+                        <!-- 별점 -->
+                        <div class="review-star write-star closed">
+                            <label class="review-star-label" for="star-01">
+                                <input type="radio" class="review-star-input" name="star" id="star-01">
+                                <span class="star-icon"></span>
+                            </label>
+                            <label class="review-star-label" for="star-02">
+                                <input type="radio" class="review-star-input" name="star" id="star-02">
+                                <span class="star-icon"></span>
+                            </label>
+                            <label class="review-star-label" for="star-03">
+                                <input type="radio" class="review-star-input" name="star" id="star-03">
+                                <span class="star-icon"></span>
+                            </label>
+                            <label class="review-star-label" for="star-04">
+                                <input type="radio" class="review-star-input" name="star" id="star-04">
+                                <span class="star-icon"></span>
+                            </label>
+                            <label class="review-star-label" for="star-05">
+                                <input type="radio" class="review-star-input" name="star" id="star-05">
+                                <span class="star-icon"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 작성내용 -->
+                    <div class="review-write closed">
+                        <input type="text" name="reviewContent" class="review-input" placeholder="재미있게 보셨나요? 영화의 어떤 점이 좋았는지 이야기해주세요.">
+                    </div>
+
+                    <!-- 등록/취소 버튼 -->
+                    <div class="btn-area closed">
+                        <button type="submit" class="submit-btn basic">등록</button>   
+                        <button type="reset" class="reset-btn basic">취소</button>
+                    </div>
+
+                    <!-- 관람평 목록 영역 -->
+                    <section class="review-list-area" th:fragment="review-list-area">
+                        <!-- 관람평 없음 -->
+                        <div class="no-review" th:if="${#lists.isEmpty(reviewList)}">작성된 관람평이 없습니다.</div>
+
+                        <!-- 관람평 있음 -->
+                        <section class="review-box" th:unless="${#lists.isEmpty(reviewList)}">
+                            <div class="yes-review" th:each="review, stat : ${reviewList}" th:classappend="${stat.index >= 5} ? 'hidden'" th:attr="data-review-no=${review.reviewNo}">
+
+                                <!-- 유저 정보 -->
+                                <div class="review-profile">
+                                    <img th:src="${review.member.profilePath != null ? review.member.profilePath : '/images/member/person.svg'}">
+                                    <p class="review-name" th:text="${review.member.memberNickName}">유저일</p>
+                                </div>
+
+                                <div class="review-right">
+                                    <!-- 관람평 내용 -->
+                                    <div class="review-content">
+                                        <!-- <p class="report-btn" th:if="${session.loginMember != null and session.loginMember.memberNo != review.member.memberNo}">신고</p> -->
+                                        
+                                        <!-- 별점 -->
+                                        <div class="review-star readonly">
+                                            <span class="star-icon" th:classappend="${review.reviewScore >= 1} ? 'filled'"></span>
+                                            <span class="star-icon" th:classappend="${review.reviewScore >= 2} ? 'filled'"></span>
+                                            <span class="star-icon" th:classappend="${review.reviewScore >= 3} ? 'filled'"></span>
+                                            <span class="star-icon" th:classappend="${review.reviewScore >= 4} ? 'filled'"></span>
+                                            <span class="star-icon" th:classappend="${review.reviewScore >= 5} ? 'filled'"></span>
+                                        </div>
+                                        <!-- 작성내용 -->
+                                        <span class="review-text"  name="reviewContent" th:text="${review.reviewContent}">대충 여기 공백포함 40자 글</span>
+                                        
+                                        <div class="time-btn">
+                                            <!-- 작성 시간 -->
+                                            <p th:text="${#temporals.format(review.reviewTime, 'yyyy.MM.dd HH:mm')}">12분전</p>
+                
+                                            <!-- 수정/삭제 버튼 -->
+                                            <div class="buttons" th:if="${session.loginMember != null and session.loginMember.memberNo == review.member.memberNo}">
+                                                    <span class="update-review-btn">수정</span>
+                                                    <span>|</span>
+                                                    <span class="delete-review-btn">삭제</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- 관람평 수정 -->
+                                    <section class="review-edit closed">
+                                        <!-- 작성된 내용 -->
+                                        <div class="review-write">
+                                            <input type="text" name="updateContent" th:value="${review.reviewContent}" class="review-update-input" data-mode="edit">
+                                        </div>
+                                        
+                                        <!-- 수정/취소 버튼 -->
+                                        <div class="btn-area">
+                                            <button type="submit" class="update-btn basic">수정</button>   
+                                            <button type="reset" class="reset-btn basic">취소</button>
+                                        </div>
+                                    </section>
+
+                                </div>
+                            </div>  
+                            
+                        </section>
+                        <!-- 관람평 2개 이상 있으면 더보기로 무한 스크롤 -->
+                        <!-- <button class="review-plus-btn" th:if="${#lists.size(reviewList) > 5}">더보기 ▼</button> -->
+                        
+                    </section>
+                    
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <th:block th:replace="~{common/footer}">footer.html</th:block>
+
+    <script th:inline="javascript">
+        const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인한 회원번호";
+
+        const memberNickName = /*[[${session.loginMember?.memberNickName}]]*/ "로그인한 회원 닉네임";
+
+        const productNo = /*[[${movie.productNo}]]*/ "상품 번호";
+    </script>
+
+    <script th:src="@{/js/movie/movie-detail.js}"></script>
+    <!-- <script src="../../static/js/movie/movie-detail.js"></script> -->
+</body>
+</html>

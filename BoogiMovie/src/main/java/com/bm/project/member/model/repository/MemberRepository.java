@@ -1,0 +1,28 @@
+package com.bm.project.member.model.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.bm.project.dto.MemberDto.Login;
+import com.bm.project.entity.Member;
+
+public interface MemberRepository extends JpaRepository<Member, Long>{
+
+	// 아이디 중복검사
+	boolean existsByMemberId(String memberId);
+
+	// 닉네임 중복검사
+	boolean existsByMemberNickName(String memberNickName);
+
+	// 전화번호 중복검사
+	boolean existsByMemberPhone(String memberPhone);
+
+	// 로그인
+	Optional<Member> findByMemberId(String memberId);
+	
+//	// 소셜 로그인
+//	Optional<Member> findByEmail(String memberEmail);
+	
+
+}

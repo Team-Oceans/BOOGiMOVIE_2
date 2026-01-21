@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1:1 문의</title>
+    <link rel="stylesheet" th:href="@{/css/chatting/chatting_user.css}">
+    <link rel="stylesheet" th:href="@{/css/common/font.css}">
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+</head>
+<body>
+
+    <th:block th:replace="~{common/header_no_search}"></th:block>
+      
+    <main>
+        <header class="section_header">
+            <h1>1대1 문의</h1>
+        </header>
+
+        <div class="header_nav_button">
+                    <button class="notread">안읽음
+                    <span class="notread_img" alt="안읽은 메시지 수">3 </span>
+                    </button>
+        </div> 
+
+        <section class="section_nav"> 
+            <div class="header_nav_search">
+                <img th:src="@{/svg/magnifier.svg}" alt="검색">
+                <input id="targetInput" type="text" placeholder="관리자와의 대화를 검색하세요" onkeyup="if(window.event.keyCode==13){searchMessage()}">
+            </div> 
+            <nav class="header_nav_page"> 
+                <button type="button" class="search-nav-btn" onclick="prevSearchResult()">&lt;</button>
+                <span id="searchCount">0 / 0</span>
+                <button type="button" class="search-nav-btn" onclick="nextSearchResult()">&gt;</button>
+            </nav>
+        </section>   
+        
+        <section class="chat_container">
+                <aside class="side_list">
+                    <ul class="chatter_list chatting_list">
+                        <th:block th:each="room : ${roomList}" th:if="${room != null}">
+                            <li class="individual_chatter chatting-item" 
+                                th:classappend="${room != null and room.notReadCount != null and room.notReadCount > 0} ? 'active_chat'"
+                                th:data-chat-no="${room.chattingRoomId}" 
+                                th:data-target-no="${room.targetNo}">
+                                
+                                <img th:unless="${room.targetProfile}" class="list-profile" th:src="@{/svg/person.svg}">
+                                <img th:if="${room.targetProfile}" class="list-profile" th:src="${room.targetProfile}">
+                                
+                                <div class="item-body">
+                                    <p>
+                                        <span class="target-name" th:text="${room.targetNickName}">상대방 이름</span>
+                                        <span class="recent-send-time" th:text="${room.sendTime}">14:30</span>
+                                    </p>
+                                    <div>                                        
+                                        <p class="recent-message" th:text="${room.lastMessage}">마지막 메시지 내용</p>
+                                        <img th:src="${room.imgPath}" alt="">
+                                        <p th:if="${room.notReadCount > 0}" class="not-read-count" th:text="${room.notReadCount}"></p>
+                                        <button class="delete-room-btn" 
+                                                th:onclick="|deleteChattingRoom('${room.chattingRoomId}', event)|">
+                                            &times;
+                                        </button>
+
+                                    </div>
+
+                                </div>
+                            </li>
+
+                        </th:block>                      
+
+                    </ul>
+                </aside>
+                
+                <section class="right_panel" id="rightChatBox">
+                    <ul class="display-chatting">여기까지 읽었습니다.</ul>
+                </section>
+                
+        </section>
+
+        <section class="bottom_control_row">
+            <div class="chat_input_section">
+                <div class="bottom_input_container">
+                    <input type="text" placeholder="메세지를 입력하세요" class="chat_input" id="chattingInput">
+                    
+                    <button class="attach_button" type="button">
+                        <img th:src="@{/svg/camera.svg}" class="bottom_img2" alt="파일 첨부 버튼"> 
+                    </button>
+                    <input type="file" id="imageInput" style="display:none;" accept="image/*">
+                    
+                    <button class="send_button" id="sendBtn">
+                        <img th:src="@{/svg/enter.svg}" class="bottom_img1" alt="전송 버튼"> 
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <th:block th:replace="~{/common/footer}"></th:block>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script th:inline="javascript">
+        const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ 0;
+    </script>
+    <script th:src="@{/js/chatting/chatting_user.js}"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신고하기</title>
+    <link rel="stylesheet" th:href="@{/css/common/font.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/report_form.css}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    
+    <main>
+
+    <h1>신고하기</h1>
+
+        <form th:action="@{/admin/submit}" method="post" class="main_content">
+
+            <div class="content_name">
+                <label for="profile_upload" class="profile_circle">
+                    <img th:src="@{/svg/profile_image.svg}" alt="프로필">
+                </label>
+                <input type="file" id="profile_upload" class="profile_upload" style="display:none;">
+                <div th:text="${userName}">하멍멍</div>
+            </div>
+
+            <div class="report_type_main">
+                <div class="report_type">신고 유형 선택</div>
+                <div class="report_title">
+                    <div>욕설/비방/혐오 표현
+                        <img th:src="@{/svg/check_icon1.svg}" alt="체크">
+                    </div>
+                    <div>관련 없는 글/정보
+                        <img th:src="@{/svg/check_icon1.svg}" alt="체크">
+                    </div>
+                </div>
+            </div>
+
+            <div class="text_section">
+                <textarea name="reportContent" id="reportContent" placeholder="신고 상세 내용을 적어주세요"></textarea>
+                <div class="count">1/1000</div>
+            </div>
+
+            <button class="submit">신고 완료</button>
+
+        </form>
+
+        <section class="report_bottom">
+            <div class="warning">
+                <img th:src="@{/svg/warning.svg}" alt="경고">
+                <p>이 회원이 신고 대상에 해당하는지 다시 한번 확인하여 주시기 바랍니다.</p>
+            </div>
+
+            <div class="warning">
+                <img th:src="@{/svg/warning.svg}" alt="경고">
+                <p>신고 대상은 부기무비 이용 약관에 따라 활동 제한 등 불이익을 받을 수 있으며, 사실 관계 확인 시 쌍방 과실일 경우 신고자 또한 부기무비 이용 약관에 따라 활동 제한 등 불이익을 받을 수 있습니다.</p>
+            </div>
+
+        </section>
+    
+    </main>
+
+    <script th:src="@{/js/admin/report_form.js}"></script>
+</body>
+</html>
