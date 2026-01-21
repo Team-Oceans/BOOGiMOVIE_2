@@ -12,7 +12,6 @@
                     <!-- 선택에 따른 효과 - 타임리프(경로에 따른 효과 주기로 변경 예정) -->
                     <a th:href="@{/}" th:classappend="${url == 'home' ? 'header_active' : ''}"><div class="white font-18px">홈</div></a>
                     <a th:href="@{/books}" th:classappend="${url == 'books' ? 'header_active' : ''}"><div class="white font-18px">도서</div></a>
-                        <a th:href="@{/ubooks}" th:classappend="${url == 'ubooks' ? 'header_active' : ''}"><div class="white font-18px">중고도서</div></a>
                         <a th:href="@{/movies}" th:classappend="${url == 'movies' ? 'header_active' : ''}"><div class="white font-18px">영화</div></a>
                 </div>
 
