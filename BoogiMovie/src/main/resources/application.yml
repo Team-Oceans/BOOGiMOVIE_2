@@ -89,8 +89,4 @@ my:
   member:
     location: C:/bmImg/member/
     webpath: /images/member/
-    
-  ubook:
-    location: C:/bmImg/ubook/
-    webpath: /images/ubook/
 
