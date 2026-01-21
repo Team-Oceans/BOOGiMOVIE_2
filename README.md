@@ -50,5 +50,5 @@
 ---
 
 ## ⚙️ 실행 방법 (Getting Started)
-노션을 참고해주세요.
+노션을 참고해주세요. <br>
 https://www.notion.so/2effb8299066814e8b2bc0c7325e8fb4?source=copy_link
