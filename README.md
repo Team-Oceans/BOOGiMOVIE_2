@@ -50,6 +50,5 @@
 ---
 
 ## ⚙️ 실행 방법 (Getting Started)
-1. 저장소를 클론합니다.
-   ```bash
-   git clone [https://github.com/your-repo/BooGiMovie.git](https://github.com/your-repo/BooGiMovie.git)
+노션을 참고해주세요.
+https://www.notion.so/2effb8299066814e8b2bc0c7325e8fb4?source=copy_link
