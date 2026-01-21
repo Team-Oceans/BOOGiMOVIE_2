@@ -16,8 +16,14 @@ spring:
       ddl-auto: update
     show-sql: true
   
-  # HikariCP
   datasource:
+    # Oracle
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521/xe
+    username: bm
+    password: bm1234
+  
+    # HikariCP
     hikari:
       connection-timeout: 30000      # 30초 대기
       maximum-pool-size: 20          # 최대 연결 수
@@ -61,11 +67,6 @@ logging:
   level:
     org.elasticsearch.client: TRACE # Elasticsearch의 쿼리 로그를 출력
     edu.og.es.common.filter.LoggingFilter: TRACE # 필터 로그
-    
-# 문자인증    
-solapi:
-  api-key: ${SOLAPI_API_KEY}
-  api-secret: ${SOLAPI_API_SECRET}
 
 
 # 커스텀 경로 설정 (아래는 예시 코드)
